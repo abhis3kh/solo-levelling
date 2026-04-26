@@ -1,0 +1,327 @@
+{
+  "users": [
+    {
+      "id": "user-mog4r830-j3ozxsd",
+      "name": "Abhi",
+      "email": "admin@abhisekh.in",
+      "passwordHash": "$2a$12$xXGPxlisafgb3S.h.B6mBOAYNchVwyQYr6AX.JAsvQI8w1cK1q8La",
+      "createdAt": "2026-04-26T18:57:13.643Z",
+      "updatedAt": "2026-04-26T19:46:23.603Z",
+      "profile": {
+        "displayName": "Abhi",
+        "timeZone": "Asia/Calcutta",
+        "lastReset": "2026-04-27",
+        "xp": 244,
+        "streak": 0,
+        "stats": {
+          "vitality": 22,
+          "wealth": 24,
+          "intellect": 25,
+          "focus": 30
+        },
+        "quests": [
+          {
+            "id": "starter-pushups",
+            "name": "100 Push-Ups",
+            "category": "health",
+            "difficulty": "hunter",
+            "target": 100,
+            "unit": "reps",
+            "step": 10,
+            "xp": 42,
+            "description": "Strengthens your frame and trains grit under discomfort.",
+            "rewards": {
+              "vitality": 12,
+              "wealth": 0,
+              "intellect": 0,
+              "focus": 4
+            },
+            "progress": 100,
+            "dueTime": "20:30",
+            "completed": true,
+            "completedAt": "2026-04-26T19:26:39.165Z",
+            "custom": false,
+            "createdAt": "2026-04-26T18:57:13.654Z"
+          },
+          {
+            "id": "starter-run",
+            "name": "30-Minute Walk Or Run",
+            "category": "health",
+            "difficulty": "foundation",
+            "target": 30,
+            "unit": "minutes",
+            "step": 5,
+            "xp": 30,
+            "description": "Raises conditioning, clears mental fog, and builds consistency.",
+            "rewards": {
+              "vitality": 10,
+              "wealth": 0,
+              "intellect": 0,
+              "focus": 3
+            },
+            "progress": 30,
+            "dueTime": "20:30",
+            "completed": true,
+            "completedAt": "2026-04-26T19:26:40.966Z",
+            "custom": false,
+            "createdAt": "2026-04-26T18:57:13.654Z"
+          },
+          {
+            "id": "starter-money",
+            "name": "Money Review And Save Check-In",
+            "category": "money",
+            "difficulty": "hunter",
+            "target": 1,
+            "unit": "check-in",
+            "step": 1,
+            "xp": 36,
+            "description": "Track spending, protect savings, and keep your finances visible.",
+            "rewards": {
+              "vitality": 0,
+              "wealth": 12,
+              "intellect": 0,
+              "focus": 5
+            },
+            "progress": 1,
+            "dueTime": "21:00",
+            "completed": true,
+            "completedAt": "2026-04-26T19:26:41.758Z",
+            "custom": false,
+            "createdAt": "2026-04-26T18:57:13.654Z"
+          },
+          {
+            "id": "starter-read",
+            "name": "Read 20 Pages",
+            "category": "intelligence",
+            "difficulty": "foundation",
+            "target": 20,
+            "unit": "pages",
+            "step": 5,
+            "xp": 32,
+            "description": "Sharpens vocabulary, attention span, and reasoning depth.",
+            "rewards": {
+              "vitality": 0,
+              "wealth": 0,
+              "intellect": 10,
+              "focus": 4
+            },
+            "progress": 20,
+            "dueTime": "22:30",
+            "completed": true,
+            "completedAt": "2026-04-26T19:20:44.416Z",
+            "custom": false,
+            "createdAt": "2026-04-26T18:57:13.654Z"
+          },
+          {
+            "id": "starter-skill",
+            "name": "60 Minutes Of High-Value Skill Practice",
+            "category": "money",
+            "difficulty": "hunter",
+            "target": 60,
+            "unit": "minutes",
+            "step": 15,
+            "xp": 48,
+            "description": "Turns learning into future income power and practical competence.",
+            "rewards": {
+              "vitality": 0,
+              "wealth": 8,
+              "intellect": 8,
+              "focus": 4
+            },
+            "progress": 60,
+            "dueTime": "21:00",
+            "completed": true,
+            "completedAt": "2026-04-26T18:57:22.233Z",
+            "custom": false,
+            "createdAt": "2026-04-26T18:57:13.654Z"
+          },
+          {
+            "id": "starter-deep-work",
+            "name": "90-Minute Deep Work Sprint",
+            "category": "mind",
+            "difficulty": "monarch",
+            "target": 90,
+            "unit": "minutes",
+            "step": 15,
+            "xp": 56,
+            "description": "Builds the rare ability to attack important problems without drifting.",
+            "rewards": {
+              "vitality": 0,
+              "wealth": 4,
+              "intellect": 7,
+              "focus": 10
+            },
+            "progress": 90,
+            "dueTime": "22:00",
+            "completed": true,
+            "completedAt": "2026-04-26T18:57:20.864Z",
+            "custom": false,
+            "createdAt": "2026-04-26T18:57:13.654Z"
+          },
+          {
+            "id": "starter-mobility",
+            "name": "10-Minute Mobility Reset",
+            "category": "health",
+            "difficulty": "foundation",
+            "target": 10,
+            "unit": "minutes",
+            "step": 5,
+            "xp": 20,
+            "description": "Loosen your hips, shoulders, and back before the day hardens into stiffness.",
+            "rewards": {
+              "vitality": 6,
+              "wealth": 0,
+              "intellect": 0,
+              "focus": 2
+            },
+            "progress": 0,
+            "dueTime": "09:30",
+            "completed": false,
+            "completedAt": null,
+            "custom": false,
+            "createdAt": "2026-04-26T19:42:38.989Z"
+          },
+          {
+            "id": "starter-walk",
+            "name": "25-Minute Strength Or Brisk Walk Block",
+            "category": "health",
+            "difficulty": "foundation",
+            "target": 25,
+            "unit": "minutes",
+            "step": 5,
+            "xp": 30,
+            "description": "Gym, bodyweight circuit, or brisk walk. The win is one honest movement block.",
+            "rewards": {
+              "vitality": 9,
+              "wealth": 0,
+              "intellect": 0,
+              "focus": 3
+            },
+            "progress": 0,
+            "dueTime": "20:30",
+            "completed": false,
+            "completedAt": null,
+            "custom": false,
+            "createdAt": "2026-04-26T19:42:38.989Z"
+          },
+          {
+            "id": "starter-hydration",
+            "name": "Protein Breakfast + 2L Hydration Check",
+            "category": "health",
+            "difficulty": "foundation",
+            "target": 1,
+            "unit": "check-in",
+            "step": 1,
+            "xp": 22,
+            "description": "A simple nutrition anchor that lifts energy and makes later decisions easier.",
+            "rewards": {
+              "vitality": 7,
+              "wealth": 0,
+              "intellect": 0,
+              "focus": 2
+            },
+            "progress": 0,
+            "dueTime": "11:00",
+            "completed": false,
+            "completedAt": null,
+            "custom": false,
+            "createdAt": "2026-04-26T19:42:38.989Z"
+          },
+          {
+            "id": "starter-mind",
+            "name": "10-Minute Meditation Or Breath Reset",
+            "category": "mind",
+            "difficulty": "foundation",
+            "target": 10,
+            "unit": "minutes",
+            "step": 5,
+            "xp": 22,
+            "description": "Downshifts stress and gives your attention a clean reset.",
+            "rewards": {
+              "vitality": 1,
+              "wealth": 0,
+              "intellect": 2,
+              "focus": 7
+            },
+            "progress": 0,
+            "dueTime": "22:00",
+            "completed": false,
+            "completedAt": null,
+            "custom": false,
+            "createdAt": "2026-04-26T19:42:38.989Z"
+          },
+          {
+            "id": "starter-plan",
+            "name": "10-Minute Night Shutdown + Tomorrow Plan",
+            "category": "mind",
+            "difficulty": "foundation",
+            "target": 10,
+            "unit": "minutes",
+            "step": 5,
+            "xp": 24,
+            "description": "Close open loops, set your top tasks, and make the next morning easier to execute.",
+            "rewards": {
+              "vitality": 0,
+              "wealth": 1,
+              "intellect": 2,
+              "focus": 7
+            },
+            "progress": 0,
+            "dueTime": "22:45",
+            "completed": false,
+            "completedAt": null,
+            "custom": false,
+            "createdAt": "2026-04-26T19:42:38.989Z"
+          },
+          {
+            "id": "starter-cashflow",
+            "name": "15-Minute Income Or Money Admin Block",
+            "category": "money",
+            "difficulty": "hunter",
+            "target": 15,
+            "unit": "minutes",
+            "step": 5,
+            "xp": 32,
+            "description": "Invoice, follow up, compare a bill, review a statement, or move money with intention.",
+            "rewards": {
+              "vitality": 0,
+              "wealth": 10,
+              "intellect": 1,
+              "focus": 4
+            },
+            "progress": 0,
+            "dueTime": "20:45",
+            "completed": false,
+            "completedAt": null,
+            "custom": false,
+            "createdAt": "2026-04-26T19:42:38.989Z"
+          },
+          {
+            "id": "starter-recall",
+            "name": "Write 5 Recall Notes From Today's Learning",
+            "category": "intelligence",
+            "difficulty": "foundation",
+            "target": 5,
+            "unit": "notes",
+            "step": 1,
+            "xp": 24,
+            "description": "Write the main ideas in your own words so the knowledge actually sticks.",
+            "rewards": {
+              "vitality": 0,
+              "wealth": 0,
+              "intellect": 7,
+              "focus": 4
+            },
+            "progress": 0,
+            "dueTime": "22:30",
+            "completed": false,
+            "completedAt": null,
+            "custom": false,
+            "createdAt": "2026-04-26T19:42:38.989Z"
+          }
+        ],
+        "history": []
+      }
+    }
+  ]
+}
