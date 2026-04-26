@@ -1,10 +1,9 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-const DATA_DIR = process.env.VERCEL
-  ? path.join("/", "tmp", "data")
-  : path.join(process.cwd(), "server", "data");
-const DB_FILE = path.join(DATA_DIR, "db.json");
+const DB_FILE = process.env.VERCEL
+  ? path.join("/", "tmp", "db.json")
+  : path.join(process.cwd(), "server", "data", "db.json");
 
 let writeQueue = Promise.resolve();
 
@@ -15,7 +14,10 @@ function normalizeDatabase(candidate) {
 }
 
 export async function ensureDatabase() {
-  await fs.mkdir(DATA_DIR, { recursive: true });
+  if (!process.env.VERCEL) {
+    const DATA_DIR = path.dirname(DB_FILE);
+    await fs.mkdir(DATA_DIR, { recursive: true });
+  }
 
   try {
     await fs.access(DB_FILE);

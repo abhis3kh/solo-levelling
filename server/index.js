@@ -271,7 +271,7 @@ app.use("/api", (_request, response) => {
   response.status(404).json({ message: "API route not found." });
 });
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production" && !process.env.VERCEL) {
   app.use(express.static(DIST_DIR));
 
   app.get("*", (request, response, next) => {
