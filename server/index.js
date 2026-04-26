@@ -4,7 +4,7 @@ import express from "express";
 import path from "path";
 
 import { clearAuthCookie, getUserIdFromRequest, hashPassword, setAuthCookie, verifyPassword } from "./lib/auth.js";
-import { ensureDatabase, readDatabase, withDatabase } from "./lib/db.js";
+import { User, ensureDatabase } from "./lib/db.js";
 import {
   addCustomQuest,
   changeQuestProgress,
@@ -81,15 +81,15 @@ async function requireAuth(request, response, next) {
     return response.status(401).json({ message: "Authentication required." });
   }
 
-  const database = await readDatabase();
-  const user = database.users.find((candidate) => candidate.id === userId);
+  await ensureDatabase();
+  const user = await User.findOne({ id: userId });
 
   if (!user) {
     clearAuthCookie(response);
     return response.status(401).json({ message: "Session expired. Please sign in again." });
   }
 
-  request.userId = userId;
+  request.user = user;
   next();
 }
 
@@ -117,26 +117,24 @@ app.post("/api/auth/register", asyncHandler(async (request, response) => {
 
   const passwordHash = await hashPassword(password);
 
-  const user = await withDatabase(async (database) => {
-    const existingUser = database.users.find((candidate) => candidate.email === email);
-    if (existingUser) {
-      throw createError(409, "An account with that email already exists.");
-    }
+  await ensureDatabase();
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw createError(409, "An account with that email already exists.");
+  }
 
-    const now = new Date().toISOString();
-    const nextUser = {
-      id: createId("user"),
-      name,
-      email,
-      passwordHash,
-      createdAt: now,
-      updatedAt: now,
-      profile: createProfile({ name, timeZone }),
-    };
-
-    database.users.push(nextUser);
-    return nextUser;
+  const now = new Date().toISOString();
+  const user = new User({
+    id: createId("user"),
+    name,
+    email,
+    passwordHash,
+    createdAt: now,
+    updatedAt: now,
+    profile: createProfile({ name, timeZone }),
   });
+
+  await user.save();
 
   setAuthCookie(response, user.id);
   response.status(201).json(buildSessionPayload(user));
@@ -150,20 +148,19 @@ app.post("/api/auth/login", asyncHandler(async (request, response) => {
     throw createError(400, "Email and password are required.");
   }
 
-  const user = await withDatabase(async (database) => {
-    const existingUser = database.users.find((candidate) => candidate.email === email);
-    if (!existingUser) {
-      throw createError(401, "Invalid email or password.");
-    }
+  await ensureDatabase();
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw createError(401, "Invalid email or password.");
+  }
 
-    const isValid = await verifyPassword(password, existingUser.passwordHash);
-    if (!isValid) {
-      throw createError(401, "Invalid email or password.");
-    }
+  const isValid = await verifyPassword(password, user.passwordHash);
+  if (!isValid) {
+    throw createError(401, "Invalid email or password.");
+  }
 
-    syncProfile(existingUser, request);
-    return existingUser;
-  });
+  syncProfile(user, request);
+  await user.save();
 
   setAuthCookie(response, user.id);
   response.json(buildSessionPayload(user));
@@ -175,96 +172,68 @@ app.post("/api/auth/logout", (_request, response) => {
 });
 
 app.get("/api/auth/session", requireAuth, asyncHandler(async (request, response) => {
-  const session = await withDatabase(async (database) => {
-    const user = database.users.find((candidate) => candidate.id === request.userId);
-    if (!user) {
-      throw createError(401, "Session expired. Please sign in again.");
-    }
-
-    syncProfile(user, request);
-    return buildSessionPayload(user);
-  });
-
-  response.json(session);
+  const { user } = request;
+  syncProfile(user, request);
+  await user.save();
+  response.json(buildSessionPayload(user));
 }));
 
 app.post("/api/quests", requireAuth, asyncHandler(async (request, response) => {
-  const payload = await withDatabase(async (database) => {
-    const user = database.users.find((candidate) => candidate.id === request.userId);
-    if (!user) {
-      throw createError(401, "Session expired. Please sign in again.");
-    }
+  const { user } = request;
+  syncProfile(user, request);
+  const name = String(request.body?.name || "").trim();
 
-    syncProfile(user, request);
-    const name = String(request.body?.name || "").trim();
+  if (!name) {
+    throw createError(400, "Quest name is required.");
+  }
 
-    if (!name) {
-      throw createError(400, "Quest name is required.");
-    }
-
-    addCustomQuest(user.profile, {
-      name,
-      category: request.body?.category,
-      difficulty: request.body?.difficulty,
-      target: request.body?.target,
-      unit: request.body?.unit,
-      dueTime: request.body?.dueTime,
-      description: String(request.body?.description || "").trim(),
-    });
-
-    return buildSessionPayload(user);
+  addCustomQuest(user.profile, {
+    name,
+    category: request.body?.category,
+    difficulty: request.body?.difficulty,
+    target: request.body?.target,
+    unit: request.body?.unit,
+    dueTime: request.body?.dueTime,
+    description: String(request.body?.description || "").trim(),
   });
 
-  response.status(201).json(payload);
+  await user.save();
+  response.status(201).json(buildSessionPayload(user));
 }));
 
 app.patch("/api/quests/:questId/progress", requireAuth, asyncHandler(async (request, response) => {
-  const payload = await withDatabase(async (database) => {
-    const user = database.users.find((candidate) => candidate.id === request.userId);
-    if (!user) {
-      throw createError(401, "Session expired. Please sign in again.");
-    }
+  const { user } = request;
+  syncProfile(user, request);
 
-    syncProfile(user, request);
+  if (typeof request.body?.progress !== "number") {
+    throw createError(400, "Progress must be a number.");
+  }
 
-    if (typeof request.body?.progress !== "number") {
-      throw createError(400, "Progress must be a number.");
-    }
+  const quest = changeQuestProgress(user.profile, request.params.questId, request.body.progress);
+  if (!quest) {
+    throw createError(404, "Quest not found.");
+  }
 
-    const quest = changeQuestProgress(user.profile, request.params.questId, request.body.progress);
-    if (!quest) {
-      throw createError(404, "Quest not found.");
-    }
-
-    return buildSessionPayload(user);
-  });
-
-  response.json(payload);
+  await user.save();
+  response.json(buildSessionPayload(user));
 }));
 
 app.delete("/api/quests/:questId", requireAuth, asyncHandler(async (request, response) => {
-  const payload = await withDatabase(async (database) => {
-    const user = database.users.find((candidate) => candidate.id === request.userId);
-    if (!user) {
-      throw createError(401, "Session expired. Please sign in again.");
-    }
+  const { user } = request;
+  syncProfile(user, request);
 
-    syncProfile(user, request);
+  const quest = user.profile.quests.find((candidate) => candidate.id === request.params.questId);
+  if (!quest) {
+    throw createError(404, "Quest not found.");
+  }
 
-    const quest = user.profile.quests.find((candidate) => candidate.id === request.params.questId);
-    if (!quest) {
-      throw createError(404, "Quest not found.");
-    }
+  if (!quest.custom) {
+    throw createError(400, "Starter quests cannot be deleted.");
+  }
 
-    if (!quest.custom) {
-      throw createError(400, "Starter quests cannot be deleted.");
-    }
-
-    removeQuest(user.profile, request.params.questId);
-    return buildSessionPayload(user);
-  });
-
-  response.json(payload);
+  removeQuest(user.profile, request.params.questId);
+  await user.save();
+  response.json(buildSessionPayload(user));
 }));
 
 app.use("/api", (_request, response) => {
