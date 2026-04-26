@@ -295,27 +295,31 @@ app.use((error, _request, response, _next) => {
   response.status(status).json({ message });
 });
 
-ensureDatabase()
-  .then(() => {
-    const server = app.listen(PORT, HOST);
+export default app;
 
-    server.on("listening", () => {
-      console.log(`Ascension System API running on http://${HOST}:${PORT}`);
-    });
+if (!process.env.VERCEL) {
+  ensureDatabase()
+    .then(() => {
+      const server = app.listen(PORT, HOST);
 
-    server.on("error", (error) => {
-      if (error.code === "EACCES") {
-        console.error(`Cannot bind the API server to ${HOST}:${PORT}. Try a different PORT in your .env file.`);
-      } else if (error.code === "EADDRINUSE") {
-        console.error(`Port ${PORT} is already in use on ${HOST}. Try a different PORT in your .env file.`);
-      } else {
-        console.error("The API server failed to start.", error);
-      }
+      server.on("listening", () => {
+        console.log(`Ascension System API running on http://${HOST}:${PORT}`);
+      });
 
+      server.on("error", (error) => {
+        if (error.code === "EACCES") {
+          console.error(`Cannot bind the API server to ${HOST}:${PORT}. Try a different PORT in your .env file.`);
+        } else if (error.code === "EADDRINUSE") {
+          console.error(`Port ${PORT} is already in use on ${HOST}. Try a different PORT in your .env file.`);
+        } else {
+          console.error("The API server failed to start.", error);
+        }
+
+        process.exit(1);
+      });
+    })
+    .catch((error) => {
+      console.error("Failed to initialize the database.", error);
       process.exit(1);
     });
-  })
-  .catch((error) => {
-    console.error("Failed to initialize the database.", error);
-    process.exit(1);
-  });
+}

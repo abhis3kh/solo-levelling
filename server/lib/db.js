@@ -1,7 +1,9 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-const DATA_DIR = path.join(process.cwd(), "server", "data");
+const DATA_DIR = process.env.VERCEL
+  ? path.join("/", "tmp", "data")
+  : path.join(process.cwd(), "server", "data");
 const DB_FILE = path.join(DATA_DIR, "db.json");
 
 let writeQueue = Promise.resolve();
